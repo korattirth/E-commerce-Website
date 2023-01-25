@@ -3,14 +3,16 @@ using System;
 using E_commerce_Website.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace E_commerce_Website.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20220905062353_Ini")]
+    partial class Ini
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +134,6 @@ namespace E_commerce_Website.Migrations
                     b.Property<long>("Price")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PublicId")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("INTEGER");
 
@@ -176,14 +175,14 @@ namespace E_commerce_Website.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "9cb9e316-954d-42e8-8985-18ab2248344d",
+                            ConcurrencyStamp = "039a396b-7383-484b-973b-3f3172b308a3",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "5ce0078c-b45c-4e3e-b0cc-5617f27e5a61",
+                            ConcurrencyStamp = "1c92e6b3-b8e1-47ca-a107-b54ed4e866b4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
