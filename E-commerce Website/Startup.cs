@@ -3,6 +3,7 @@ using E_commerce_Website.Entites;
 using E_commerce_Website.Middleware;
 using E_commerce_Website.RequestHelpers;
 using E_commerce_Website.Services;
+using E_commerce_Website.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace E_commerce_Website
@@ -32,9 +37,11 @@ namespace E_commerce_Website
 
             services.AddControllers();
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddHttpContextAccessor();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "E_commerce_Website", Version = "v1" });
+                //c.DocumentFilter<RoleDocumentFilter>();
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Jwt auth header",
@@ -42,8 +49,8 @@ namespace E_commerce_Website
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                }); 
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement 
                 {
                     {
                         new OpenApiSecurityScheme
@@ -60,7 +67,18 @@ namespace E_commerce_Website
                         new List<string>()
                     }
                 });
+                c.OperationFilter<MyHeaderFilter>();
+                c.ExampleFilters();
+
+                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                var commentsFileName = "E-commerce Website" + ".XML";
+                var commentsFile = Path.Combine(baseDirectory, commentsFileName);
+
+               c.IncludeXmlComments(commentsFile);
             });
+            services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
+            // services.AddSwaggerExamplesFromAssemblyOf<TestExamples>();
+            //services.AddSwaggerExamplesFromAssemblyOf<Startup>();
             services.AddDbContext<StoreContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentityCore<User>(opt => opt.User.RequireUniqueEmail = true).AddRoles<Roles>().AddEntityFrameworkStores<StoreContext>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -102,7 +120,7 @@ namespace E_commerce_Website
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapFallbackToController("Index", "Fallback");
+              //  endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }

@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>E-commerce Website</name>
+    </assembly>
+    <members>
+        <member name="M:E_commerce_Website.Controllers.AccountController.Login(E_commerce_Website.DTOs.LoginDTO)">
+            <remarks> ****POST**** /api/Account/login</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.AccountController.Ragister(E_commerce_Website.DTOs.RagisterDTO)">
+            <remarks> ****POST**** /api/Account/register</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.AccountController.GetCurrentUser">
+            <remarks> ****GET**** /api/Account/currentUser</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.AccountController.GetSavedAddress">
+            <remarks> ****GET**** /api/Account/savedAddress</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BasketController.GetBasket">
+            <summary>
+            This endpoint retrives basket for login User
+            </summary>
+            <remarks> ****GET**** /api/Basket</remarks>
+            <response code="200">If Basket retrives successfully</response>
+            <response code="400">If Basket does not found</response>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BasketController.AddItemToBasket(System.Int32,System.Int32)">
+            <summary>
+            This endpoint post product into basket when we provide productId and quantity 
+            </summary>
+            <param name="productId">Required for finding Product</param>
+            <param name="quantity">How many Product want's to add</param>
+            <remarks> ****POST**** /api/Basket</remarks>
+            <returns>IEnumerable of slugs</returns>
+            <response code="200">If product added successfully</response>
+            <response code="400">If ProductId or quantity parameter is missing</response>
+            <response code="404">If product does't found in database</response>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BasketController.RemoveBasket(System.Int32,System.Int32)">
+            <summary>
+            This endpoint remove product into basket when we provide productId and quantity 
+            </summary>
+            <remarks> ****DELETE**** /api/Basket</remarks>
+            <param name="productId">Required for finding Product</param>
+            <param name="quantity">How many Product want's to remove</param>
+            <response code="200">If product removed successfully</response>
+            <response code="400">If ProductId or quantity parameter is missing</response>
+            <response code="404">If product does't found in database</response>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BuggyController.GetNotFound">
+            <remarks> ****GET**** /api/Buggy/not-found</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BuggyController.GetBadRequest">
+            <remarks> ****GET**** /api/Buggy/bad-request</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BuggyController.GetUnauthorised">
+            <remarks> ****GET**** /api/Buggy/unauthorised</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BuggyController.GetValidateError">
+            <remarks> ****GET**** /api/Buggy/validation-error</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.BuggyController.GetServerError">
+            <remarks> ****GET**** /api/Buggy/server-error</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.OrdersController.GetOrders">
+            <remarks> ****GET**** /api/Orders</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.OrdersController.GetOrder(System.Int32)">
+            <remarks> ****GET**** /api/Orders/id</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.OrdersController.CreateOrder(E_commerce_Website.DTOs.CreateOrderDTO)">
+            <remarks> ****POST**** /api/Orders</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.PaymentController.CreateOrUpdatePaymentIntent">
+            <remarks> ****POST**** /api/Payment</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.PaymentController.StripeWebhook">
+            <remarks> ****POST**** /api/Payment/webhook</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.ProductsController.GetProduct(E_commerce_Website.RequestHelpers.ProductParms)">
+            <remarks> ****GET**** /api/Products</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.ProductsController.GetProduct(System.Int32)">
+            <remarks> ****GET**** /api/Products/id</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.ProductsController.GetFilters">
+            <remarks> ****GET**** /api/Products/filters</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.ProductsController.CreateProduct(E_commerce_Website.DTOs.CreateProductDTO)">
+            <remarks> ****POST**** /api/Products</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.ProductsController.UpdateProduct(E_commerce_Website.DTOs.UpdateProductDTO)">
+            <remarks> ****PUT**** /api/Products</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.ProductsController.DeleteProduct(System.Int32)">
+            <remarks> ****DELETE**** /api/Products</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.TestController.Test1(System.String,System.String)">
+            <summary>
+            This endpoint retrieves all of the users' information (name, adress, contacts, and so on) that matches the query condition
+            </summary>
+            <param name="test">Only for testing purpose</param>
+            <param name="test1">This for parameter</param>
+            <remarks> ****Get**** /api/Test1?test=:test</remarks>
+            <returns>IEnumerable of slugs</returns>
+            <response code="200">If all requested items are found</response>
+            <response code="400">If test parameter is missing
+            </response>
+            <response code="404">If number of records found doesn't equal 
+            number of records requested</response>
+        </member>
+        <member name="M:E_commerce_Website.Controllers.WeatherForecastController.Get">
+            <remarks> ****GET**** /api/WeatherForecast</remarks>
+        </member>
+        <member name="M:E_commerce_Website.Utils.MyHeaderFilter.Apply(Microsoft.OpenApi.Models.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Operation filter to add the requirement of the custom header
+            </summary>
+        </member>
+    </members>
+</doc>

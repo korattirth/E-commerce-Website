@@ -4,7 +4,6 @@ using E_commerce_Website.Entites.OrderAggregate;
 using E_commerce_Website.Extensitions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,20 +18,23 @@ namespace E_commerce_Website.Controllers
         {
             _context = context;
         }
-        [HttpGet]
+        /// <remarks> ****GET**** /api/Orders</remarks>
+        [HttpGet(Name ="Get Orders")]
         public async Task<ActionResult<List<OrderDTO>>> GetOrders()
         {
             return await _context.Orders
                 .ProjectOrderToOrderDTO()
                 .Where(x => x.BuyerId == User.Identity.Name).ToListAsync();
         }
-        [HttpGet("{id}",Name ="GetOrder")]
+        /// <remarks> ****GET**** /api/Orders/id</remarks>
+        [HttpGet("{id}",Name ="Get Order")]
         public async Task<ActionResult<OrderDTO>> GetOrder(int id)
         {
             return await _context.Orders.ProjectOrderToOrderDTO()
                 .Where(x => x.BuyerId == User.Identity.Name && x.Id == id).FirstOrDefaultAsync();
         }
-        [HttpPost]
+        /// <remarks> ****POST**** /api/Orders</remarks>
+        [HttpPost(Name ="Create Order")]
         public async Task<ActionResult<int>> CreateOrder(CreateOrderDTO orderDto)
         {
             var basket = await _context.Baskets.RetrieveBasketWithItems(User.Identity.Name).FirstOrDefaultAsync();

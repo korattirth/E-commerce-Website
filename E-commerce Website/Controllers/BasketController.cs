@@ -19,14 +19,30 @@ namespace E_commerce_Website.Controllers
         {
             _context = context;
         }
-        [HttpGet(Name ="GetBasket")]
+        /// <summary>
+        /// This endpoint retrives basket for login User
+        /// </summary>
+        /// <remarks> ****GET**** /api/Basket</remarks>
+        /// <response code="200">If Basket retrives successfully</response>
+        /// <response code="400">If Basket does not found</response>
+        [HttpGet(Name ="Get Basket")]
         public async Task<ActionResult<BasketDTO>> GetBasket()
         {
             Basket basket = await RetrieveBasket(GetBuyerId());
             if (basket == null) return BadRequest(new ProblemDetails { Title = "Product not found" });
             return basket.MapBasketToDto();
         }
-        [HttpPost]
+        /// <summary>
+        /// This endpoint post product into basket when we provide productId and quantity 
+        /// </summary>
+        /// <param name="productId">Required for finding Product</param>
+        /// <param name="quantity">How many Product want's to add</param>
+        /// <remarks> ****POST**** /api/Basket</remarks>
+        /// <returns>IEnumerable of slugs</returns>
+        /// <response code="200">If product added successfully</response>
+        /// <response code="400">If ProductId or quantity parameter is missing</response>
+        /// <response code="404">If product does't found in database</response>
+        [HttpPost(Name = "Add Item To Basket")]
         public async Task<ActionResult<BasketDTO>> AddItemToBasket(int productId , int quantity)
         {
             var basket = await RetrieveBasket(GetBuyerId());
@@ -41,7 +57,16 @@ namespace E_commerce_Website.Controllers
 
             return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
         }
-        [HttpDelete]
+        /// <summary>
+        /// This endpoint remove product into basket when we provide productId and quantity 
+        /// </summary>
+        /// <remarks> ****DELETE**** /api/Basket</remarks>
+        /// <param name="productId">Required for finding Product</param>
+        /// <param name="quantity">How many Product want's to remove</param>
+        /// <response code="200">If product removed successfully</response>
+        /// <response code="400">If ProductId or quantity parameter is missing</response>
+        /// <response code="404">If product does't found in database</response>
+        [HttpDelete(Name = "Remove Basket")]
         public async Task<ActionResult> RemoveBasket(int productId , int quantity)
         {
             var basket = await RetrieveBasket(GetBuyerId());

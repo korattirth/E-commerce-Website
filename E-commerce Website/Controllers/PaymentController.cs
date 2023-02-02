@@ -28,8 +28,9 @@ namespace E_commerce_Website.Controllers
             _context = context;
             _config = config;
         }
+        /// <remarks> ****POST**** /api/Payment</remarks>
         [Authorize]
-        [HttpPost]
+        [HttpPost(Name = "Create Or Update Payment Intent")]
         public async Task<ActionResult<BasketDTO>> CreateOrUpdatePaymentIntent(/*PaymentAddress address*/)
         {
             var basket = await _context.Baskets
@@ -53,7 +54,8 @@ namespace E_commerce_Website.Controllers
 
             return basket.MapBasketToDto();
         }
-        [HttpPost("webhook")]
+        /// <remarks> ****POST**** /api/Payment/webhook</remarks>
+        [HttpPost("webhook",Name = "Webhook")]
         public async Task<ActionResult> StripeWebhook()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();

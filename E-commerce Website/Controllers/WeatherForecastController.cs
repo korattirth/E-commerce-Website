@@ -22,8 +22,10 @@ namespace E_commerce_Website.Controllers
         {
             _logger = logger;
         }
-
-        [HttpGet]
+        /// <remarks> ****GET**** /api/WeatherForecast</remarks>
+        [HttpGet(Name = "Get Weather")]
+        [ProducesResponseType(typeof(WeatherForecast), 201)]
+        [ProducesResponseType(400)]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

@@ -3,10 +3,13 @@ using E_commerce_Website.DTOs;
 using E_commerce_Website.Entites;
 using E_commerce_Website.Extensitions;
 using E_commerce_Website.Services;
+using E_commerce_Website.Utils;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +29,9 @@ namespace E_commerce_Website.Controllers
             _tokenService = tokenService;
             _context = context;
         }
-        [HttpPost("login")]
+        /// <remarks> ****POST**** /api/Account/login</remarks>
+        [HttpPost("login",Name ="Post Login")]
+        [ProducesResponseType(typeof(UserDTO), 200)]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
             var user = await _userManger.FindByNameAsync(loginDTO.UserName);
@@ -51,7 +56,8 @@ namespace E_commerce_Website.Controllers
                 Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
         };
         }
-        [HttpPost("register")]
+        /// <remarks> ****POST**** /api/Account/register</remarks>
+        [HttpPost("register", Name = "Post Register")]
         public async Task<ActionResult> Ragister(RagisterDTO ragisterDTO)
         {
             var user = new User { UserName = ragisterDTO.UserName, Email = ragisterDTO.Email };
@@ -67,8 +73,9 @@ namespace E_commerce_Website.Controllers
             await _userManger.AddToRoleAsync(user, "Member");
             return StatusCode(201);
         }
+        /// <remarks> ****GET**** /api/Account/currentUser</remarks>
         [Authorize]
-        [HttpGet("currentUser")]
+        [HttpGet("currentUser", Name = "Get Current User")]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
             var user = await _userManger.FindByNameAsync(User.Identity.Name);
@@ -80,8 +87,9 @@ namespace E_commerce_Website.Controllers
                 Basket = userBasket?.MapBasketToDto()
             };
         }
+        /// <remarks> ****GET**** /api/Account/savedAddress</remarks>
         [Authorize]
-        [HttpGet("savedAddress")]
+        [HttpGet("savedAddress", Name = "Get Save Address")]
         public async Task<ActionResult<UserAddress>> GetSavedAddress()
         {
             return await _userManger.Users.Where(x => x.UserName == User.Identity.Name).Select(user => user.Address).FirstOrDefaultAsync();

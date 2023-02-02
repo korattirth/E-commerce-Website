@@ -28,7 +28,8 @@ namespace E_commerce_Website.Controllers
             _mapper = mapper;
             _imageService = imageService;
         }
-        [HttpGet]
+        /// <remarks> ****GET**** /api/Products</remarks>
+        [HttpGet(Name ="Get Products")]
         public async Task<ActionResult<PagedList<Product>>> GetProduct([FromQuery]ProductParms productParms)
         {
             var query = _context.Products
@@ -38,7 +39,8 @@ namespace E_commerce_Website.Controllers
                 .AsQueryable();
              
             var products = await PagedList<Product>.ToPageList(query,productParms.PageNumber,productParms.PageSize);
-            var fileName = "xyz.json";
+
+           /* var fileName = "xyz.json";
 
             var json_data = string.Empty;
             using (var w = new WebClient())
@@ -48,30 +50,22 @@ namespace E_commerce_Website.Controllers
             }
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json_data);
             var content = new MemoryStream(bytes);
-            return File(content, "application/json", fileName);
+            return File(content, "application/json", fileName);*/
 
-            /*using (StreamReader r = new StreamReader(json_data))
-            {
-                string json = r.ReadToEnd();
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(json);
-                var content = new MemoryStream(bytes);
-                return File(content, "application/json", fileName);
-            }*/
+            Response.AddPaginationHeader(products.MetaData);
 
-
-            /*Response.AddPaginationHeader(products.MetaData);
-
-            return products;*/
+            return products;
         }
-
-        [HttpGet("{id}", Name = "GetProduct")]
+        /// <remarks> ****GET**** /api/Products/id</remarks>
+        [HttpGet("{id}", Name = "Get Product")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             var product = await _context.Products.FindAsync(id);
             if (product == null) return NotFound();
             return product;
         }
-        [HttpGet("filters")]
+        /// <remarks> ****GET**** /api/Products/filters</remarks>
+        [HttpGet("filters",Name = "Get Filters")]
         public async Task<IActionResult> GetFilters()
         {
             var brands = await _context.Products.Select(p => p.Brand).Distinct().ToListAsync();
@@ -79,8 +73,9 @@ namespace E_commerce_Website.Controllers
 
             return Ok(new { brands, type });
         }
+        /// <remarks> ****POST**** /api/Products</remarks>
         [Authorize(Roles ="Admin")]
-        [HttpPost]
+        [HttpPost(Name = "Create Product")]
         public async Task<ActionResult<Product>> CreateProduct([FromForm]CreateProductDTO productDTO)
         {
             var product = _mapper.Map<Product>(productDTO);
@@ -96,10 +91,10 @@ namespace E_commerce_Website.Controllers
             var result = await _context.SaveChangesAsync() > 0;
             if (result) return CreatedAtRoute("GetProduct", new { Id = product.Id }, product);
             return BadRequest(new ProblemDetails { Title = "Problem creating new product" });
-
         }
+        /// <remarks> ****PUT**** /api/Products</remarks>
         [Authorize(Roles = "Admin")]
-        [HttpPut]
+        [HttpPut(Name ="Update Product")]
         public async Task<ActionResult> UpdateProduct([FromForm]UpdateProductDTO updateProdct)
         {
             var product = await _context.Products.FindAsync(updateProdct.Id);
@@ -119,8 +114,9 @@ namespace E_commerce_Website.Controllers
             if (result) return Ok(product);
             return BadRequest(new ProblemDetails { Title = "Problem Updating" });
         }
+        /// <remarks> ****DELETE**** /api/Products</remarks>
         [Authorize(Roles = "Admin")]
-        [HttpDelete]
+        [HttpDelete(Name ="Delete Product")]
         public async Task<ActionResult> DeleteProduct(int Id)
         {
             var product = await _context.Products.FindAsync(Id);
