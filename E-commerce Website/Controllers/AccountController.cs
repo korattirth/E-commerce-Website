@@ -29,9 +29,13 @@ namespace E_commerce_Website.Controllers
             _tokenService = tokenService;
             _context = context;
         }
+        ///<summary>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        ///Morbi et nunc suscipit neque ornare condimentum nec ut sem. Phasellus dictum ornare lectus ut gravida.
+        ///Maecenas semper efficitur mi, nec interdum eros posuere sit amet. Sed id gravida nunc.
+        ///Nulla volutpat tincidunt nulla et finibus</summary>
         /// <remarks> ****POST**** /api/Account/login</remarks>
         [HttpPost("login",Name ="Post Login")]
-        [ProducesResponseType(typeof(UserDTO), 200)]
+        //[ProducesResponseType(typeof(UserDTO), 200)]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
             var user = await _userManger.FindByNameAsync(loginDTO.UserName);

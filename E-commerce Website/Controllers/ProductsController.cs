@@ -28,7 +28,33 @@ namespace E_commerce_Website.Controllers
             _mapper = mapper;
             _imageService = imageService;
         }
-        /// <remarks> ****GET**** /api/Products</remarks>
+        /// <remarks>
+        /// The API takes the string authorization, languageId, search, isDeleted,  isLocked,  isActive,  IsDefaultPolicy,  entities,  entityTypes,  roles,  specialPasswordComplexity,  branchId,  page and  pageSize from header.
+        /// 
+        /// API Headers
+        /// ===========
+        /// authorization* : The access token received when the login was executed
+        /// languageId*:  the language Id of the current User
+        /// search:  the search string 
+        /// isDeleted: boolean 
+        /// isLocked:  boolean
+        /// isActive:  boolean
+        /// IsDefaultPolicy:  boolean
+        /// entities:  string
+        /// entityTypes:  string
+        /// roles:  string roles 
+        /// specialPasswordComplexity*:  boolean
+        /// branchId*:  Int64
+        /// sort:  string (example: "F" for Fullname,"U" for username and "E" for email )
+        /// page*:  int
+        /// pageSize*:int
+        /// API Input
+        /// =========
+        /// API URL
+        /// No API URL input is required to call this API
+        /// ===========
+        /// No body input is required to call this API
+        /// </remarks>
         [HttpGet(Name ="Get Products")]
         public async Task<ActionResult<PagedList<Product>>> GetProduct([FromQuery]ProductParms productParms)
         {

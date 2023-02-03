@@ -5,7 +5,11 @@
     </assembly>
     <members>
         <member name="M:E_commerce_Website.Controllers.AccountController.Login(E_commerce_Website.DTOs.LoginDTO)">
-            <remarks> ****POST**** /api/Account/login</remarks>
+            <summary>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Morbi et nunc suscipit neque ornare condimentum nec ut sem. Phasellus dictum ornare lectus ut gravida.
+            Maecenas semper efficitur mi, nec interdum eros posuere sit amet. Sed id gravida nunc.
+            Nulla volutpat tincidunt nulla et finibus</summary>
+             <remarks> ****POST**** /api/Account/login</remarks>
         </member>
         <member name="M:E_commerce_Website.Controllers.AccountController.Ragister(E_commerce_Website.DTOs.RagisterDTO)">
             <remarks> ****POST**** /api/Account/register</remarks>
@@ -78,7 +82,33 @@
             <remarks> ****POST**** /api/Payment/webhook</remarks>
         </member>
         <member name="M:E_commerce_Website.Controllers.ProductsController.GetProduct(E_commerce_Website.RequestHelpers.ProductParms)">
-            <remarks> ****GET**** /api/Products</remarks>
+            <remarks>
+            The API takes the string authorization, languageId, search, isDeleted,  isLocked,  isActive,  IsDefaultPolicy,  entities,  entityTypes,  roles,  specialPasswordComplexity,  branchId,  page and  pageSize from header.
+            
+            API Headers
+            ===========
+            authorization* : The access token received when the login was executed
+            languageId*:  the language Id of the current User
+            search:  the search string 
+            isDeleted: boolean 
+            isLocked:  boolean
+            isActive:  boolean
+            IsDefaultPolicy:  boolean
+            entities:  string
+            entityTypes:  string
+            roles:  string roles 
+            specialPasswordComplexity*:  boolean
+            branchId*:  Int64
+            sort:  string (example: "F" for Fullname,"U" for username and "E" for email )
+            page*:  int
+            pageSize*:int
+            API Input
+            =========
+            API URL
+            No API URL input is required to call this API
+            ===========
+            No body input is required to call this API
+            </remarks>
         </member>
         <member name="M:E_commerce_Website.Controllers.ProductsController.GetProduct(System.Int32)">
             <remarks> ****GET**** /api/Products/id</remarks>
