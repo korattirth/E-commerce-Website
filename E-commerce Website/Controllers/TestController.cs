@@ -28,11 +28,11 @@ namespace E_commerce_Website.Controllers
         /// </response>
         /// <response code="404">If number of records found doesn't equal 
         /// number of records requested</response>
-        [HttpGet(Name ="Get Test")]
-        [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(LoginDTO))]
+        [HttpGet(Name = "Get Test")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public JsonResult Test1([FromHeader(Name = "TestHeader")] string test,string test1)
+        public JsonResult Test1([FromHeader(Name = "TestHeader")] string test, string test1)
         {
             var json_data = string.Empty;
             using (var w = new WebClient())

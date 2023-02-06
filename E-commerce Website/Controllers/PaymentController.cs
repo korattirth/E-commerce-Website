@@ -29,55 +29,55 @@ namespace E_commerce_Website.Controllers
             _config = config;
         }
         /// <remarks> ****POST**** /api/Payment</remarks>
-        [Authorize]
-        [HttpPost(Name = "Create Or Update Payment Intent")]
-        public async Task<ActionResult<BasketDTO>> CreateOrUpdatePaymentIntent(/*PaymentAddress address*/)
-        {
-            var basket = await _context.Baskets
-                .RetrieveBasketWithItems(User.Identity.Name)
-                .FirstOrDefaultAsync();
+        //[Authorize]
+        //[HttpPost(Name = "Create Or Update Payment Intent")]
+        //public async Task<ActionResult<BasketDTO>> CreateOrUpdatePaymentIntent(/*PaymentAddress address*/)
+        //{
+        //    var basket = await _context.Baskets
+        //        .RetrieveBasketWithItems(User.Identity.Name)
+        //        .FirstOrDefaultAsync();
 
-            if (basket == null) return NotFound();
+        //    if (basket == null) return NotFound();
 
-            var intent = await _paymentServices.CreateOrUpdatePaymentIntent(basket);
+        //    var intent = await _paymentServices.CreateOrUpdatePaymentIntent(basket);
 
-            if (intent == null) return BadRequest(new ProblemDetails { Title = "Problem creating payment intent" });
+        //    if (intent == null) return BadRequest(new ProblemDetails { Title = "Problem creating payment intent" });
 
-            basket.PaymentIntentId = basket.PaymentIntentId ?? intent.Id;
-            basket.ClientSecret = basket.ClientSecret ?? intent.ClientSecret;
+        //    basket.PaymentIntentId = basket.PaymentIntentId ?? intent.Id;
+        //    basket.ClientSecret = basket.ClientSecret ?? intent.ClientSecret;
 
-            _context.Update(basket);
+        //    _context.Update(basket);
 
-            var result = await _context.SaveChangesAsync() > 0;
+        //    var result = await _context.SaveChangesAsync() > 0;
 
-            if (!result) return BadRequest(new ProblemDetails { Title = "Problem updating basket with intent" });
+        //    if (!result) return BadRequest(new ProblemDetails { Title = "Problem updating basket with intent" });
 
-            return basket.MapBasketToDto();
-        }
+        //    return basket.MapBasketToDto();
+        //}
         /// <remarks> ****POST**** /api/Payment/webhook</remarks>
-        [HttpPost("webhook",Name = "Webhook")]
-        public async Task<ActionResult> StripeWebhook()
-        {
-            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+ //       [HttpPost("webhook",Name = "Webhook")]
+ //       public async Task<ActionResult> StripeWebhook()
+ //       {
+ //           var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
- /*           var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"],
-                _config["StripeSettings:WhSecret"]);*/
+ ///*           var stripeEvent = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"],
+ //               _config["StripeSettings:WhSecret"]);*/
 
-            var test = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _config["StripeSettings:WhSecret"],
-                        300,
-                        (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
-                        false);
+ //           var test = EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _config["StripeSettings:WhSecret"],
+ //                       300,
+ //                       (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+ //                       false);
 
-            var charge = (Charge)test.Data.Object;
+ //           var charge = (Charge)test.Data.Object;
 
-            var order = await _context.Orders.FirstOrDefaultAsync(x =>
-                x.PaymentIntentId == charge.PaymentIntentId);
+ //           var order = await _context.Orders.FirstOrDefaultAsync(x =>
+ //               x.PaymentIntentId == charge.PaymentIntentId);
 
-            if (charge.Status == "succeeded") order.OrderStatus = OrderStatus.PaymentRecevied;
+ //           if (charge.Status == "succeeded") order.OrderStatus = OrderStatus.PaymentRecevied;
 
-            await _context.SaveChangesAsync();
+ //           await _context.SaveChangesAsync();
 
-            return new EmptyResult();
-        }
+ //           return new EmptyResult();
+ //       }
     }
 }

@@ -67,7 +67,7 @@ namespace E_commerce_Website
                         new List<string>()
                     }
                 });
-                c.OperationFilter<MyHeaderFilter>();
+                //c.OperationFilter<MyHeaderFilter>();
                 c.ExampleFilters();
 
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;

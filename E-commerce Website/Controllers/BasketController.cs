@@ -25,13 +25,13 @@ namespace E_commerce_Website.Controllers
         /// <remarks> ****GET**** /api/Basket</remarks>
         /// <response code="200">If Basket retrives successfully</response>
         /// <response code="400">If Basket does not found</response>
-        [HttpGet(Name ="Get Basket")]
-        public async Task<ActionResult<BasketDTO>> GetBasket()
-        {
-            Basket basket = await RetrieveBasket(GetBuyerId());
-            if (basket == null) return BadRequest(new ProblemDetails { Title = "Product not found" });
-            return basket.MapBasketToDto();
-        }
+        //[HttpGet(Name ="Get Basket")]
+        //public async Task<ActionResult<BasketDTO>> GetBasket()
+        //{
+        //    Basket basket = await RetrieveBasket(GetBuyerId());
+        //    if (basket == null) return BadRequest(new ProblemDetails { Title = "Product not found" });
+        //    return basket.MapBasketToDto();
+        //}
         /// <summary>
         /// This endpoint post product into basket when we provide productId and quantity 
         /// </summary>
@@ -42,21 +42,21 @@ namespace E_commerce_Website.Controllers
         /// <response code="200">If product added successfully</response>
         /// <response code="400">If ProductId or quantity parameter is missing</response>
         /// <response code="404">If product does't found in database</response>
-        [HttpPost(Name = "Add Item To Basket")]
-        public async Task<ActionResult<BasketDTO>> AddItemToBasket(int productId , int quantity)
-        {
-            var basket = await RetrieveBasket(GetBuyerId());
-            if (basket == null) basket = CreateBasket();
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null) return NotFound();
-            basket.AddItem(product, quantity);
+        //[HttpPost(Name = "Add Item To Basket")]
+        //public async Task<ActionResult<BasketDTO>> AddItemToBasket(int productId , int quantity)
+        //{
+        //    var basket = await RetrieveBasket(GetBuyerId());
+        //    if (basket == null) basket = CreateBasket();
+        //    var product = await _context.Products.FindAsync(productId);
+        //    if (product == null) return NotFound();
+        //    basket.AddItem(product, quantity);
 
-            var result = await _context.SaveChangesAsync() > 0;
+        //    var result = await _context.SaveChangesAsync() > 0;
 
-            if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
+        //    if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
 
-            return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
-        }
+        //    return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
+        //}
         /// <summary>
         /// This endpoint remove product into basket when we provide productId and quantity 
         /// </summary>
@@ -66,16 +66,16 @@ namespace E_commerce_Website.Controllers
         /// <response code="200">If product removed successfully</response>
         /// <response code="400">If ProductId or quantity parameter is missing</response>
         /// <response code="404">If product does't found in database</response>
-        [HttpDelete(Name = "Remove Basket")]
-        public async Task<ActionResult> RemoveBasket(int productId , int quantity)
-        {
-            var basket = await RetrieveBasket(GetBuyerId());
-            if (basket == null) return NotFound();
-            basket.RemoveItem(productId, quantity);
-            var result = await _context.SaveChangesAsync() > 0;
-            if (result) return Ok();
-            return BadRequest(new ProblemDetails { Title = "Problem removeing item from the basket" });
-        }
+        //[HttpDelete(Name = "Remove Basket")]
+        //public async Task<ActionResult> RemoveBasket(int productId , int quantity)
+        //{
+        //    var basket = await RetrieveBasket(GetBuyerId());
+        //    if (basket == null) return NotFound();
+        //    basket.RemoveItem(productId, quantity);
+        //    var result = await _context.SaveChangesAsync() > 0;
+        //    if (result) return Ok();
+        //    return BadRequest(new ProblemDetails { Title = "Problem removeing item from the basket" });
+        //}
 
         private Basket CreateBasket()
         {

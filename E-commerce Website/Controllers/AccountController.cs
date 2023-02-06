@@ -29,11 +29,35 @@ namespace E_commerce_Website.Controllers
             _tokenService = tokenService;
             _context = context;
         }
-        ///<summary>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        ///Morbi et nunc suscipit neque ornare condimentum nec ut sem. Phasellus dictum ornare lectus ut gravida.
-        ///Maecenas semper efficitur mi, nec interdum eros posuere sit amet. Sed id gravida nunc.
-        ///Nulla volutpat tincidunt nulla et finibus</summary>
-        /// <remarks> ****POST**** /api/Account/login</remarks>
+        ///<summary>This endpoint will create a new user, including their contacts, address book and entities. 
+        ///This function can only be used by employees who have the rights and is not accessible from the outside.
+        /// </summary>
+        /// <remarks>Ragister Method</remarks>
+        ///<response code="200">If the user registers successfully </response>
+        ///<response code="400">If any Validation error arrive </response>
+        [HttpPost("register", Name = "Post Register")]
+        public async Task<ActionResult> Ragister(RagisterDTO ragisterDTO)
+        {
+            var user = new User { UserName = ragisterDTO.UserName, Email = ragisterDTO.Email };
+            var result = await _userManger.CreateAsync(user, ragisterDTO.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+                return ValidationProblem();
+            }
+            await _userManger.AddToRoleAsync(user, "Member");
+            return StatusCode(201);
+        }
+
+        ///<summary>Registered users can login using this API described below.
+        ///The login operation requires two properties: one marked as user identity and the second is password. 
+        ///After login, user will get token value for that user.</summary>
+        /// <remarks>Login Method</remarks>
+        ///<response code="200">If the user login successfully </response>
+        ///<response code="401">If user credentials are invalid </response>
         [HttpPost("login",Name ="Post Login")]
         //[ProducesResponseType(typeof(UserDTO), 200)]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
@@ -60,27 +84,18 @@ namespace E_commerce_Website.Controllers
                 Basket = anonBasket != null ? anonBasket.MapBasketToDto() : userBasket?.MapBasketToDto()
         };
         }
-        /// <remarks> ****POST**** /api/Account/register</remarks>
-        [HttpPost("register", Name = "Post Register")]
-        public async Task<ActionResult> Ragister(RagisterDTO ragisterDTO)
-        {
-            var user = new User { UserName = ragisterDTO.UserName, Email = ragisterDTO.Email };
-            var result = await _userManger.CreateAsync(user, ragisterDTO.Password);
-            if (!result.Succeeded)
-            {
-                foreach(var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-                return ValidationProblem();
-            }
-            await _userManger.AddToRoleAsync(user, "Member");
-            return StatusCode(201);
-        }
+        ///<summary>This endpoint retrieves the current login users' information (name, address, contacts, token , basket items and so on) 
+        ///that matches the query condition.
+        ///In addition to input parameters, you may also have to provide the access token indicating when you login.
+        ///</summary>
         /// <remarks> ****GET**** /api/Account/currentUser</remarks>
+        /// <param name="token">In order to get current user details, the user will need to provide their
+        /// token through the header</param>
+        ///<response code="200">If the user is autorize than it will return user details and basket </response>
+        ///<response code="400">If user's token is not valid </response>
         [Authorize]
         [HttpGet("currentUser", Name = "Get Current User")]
-        public async Task<ActionResult<UserDTO>> GetCurrentUser()
+        public async Task<ActionResult<UserDTO>> GetCurrentUser([FromHeader(Name = "Authorization")] string token)
         {
             var user = await _userManger.FindByNameAsync(User.Identity.Name);
             var userBasket = await RetrieveBasket(User.Identity.Name);
@@ -92,12 +107,12 @@ namespace E_commerce_Website.Controllers
             };
         }
         /// <remarks> ****GET**** /api/Account/savedAddress</remarks>
-        [Authorize]
-        [HttpGet("savedAddress", Name = "Get Save Address")]
-        public async Task<ActionResult<UserAddress>> GetSavedAddress()
-        {
-            return await _userManger.Users.Where(x => x.UserName == User.Identity.Name).Select(user => user.Address).FirstOrDefaultAsync();
-        }
+        //[Authorize]
+        //[HttpGet("savedAddress", Name = "Get Save Address")]
+        //public async Task<ActionResult<UserAddress>> GetSavedAddress()
+        //{
+        //    return await _userManger.Users.Where(x => x.UserName == User.Identity.Name).Select(user => user.Address).FirstOrDefaultAsync();
+        //}
         private async Task<Basket> RetrieveBasket(string buyerId)
         {
             if (string.IsNullOrEmpty(buyerId))
