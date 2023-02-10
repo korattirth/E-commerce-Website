@@ -35,7 +35,7 @@ namespace E_commerce_Website.Controllers
         /// <remarks>Ragister Method</remarks>
         ///<response code="200">If the user registers successfully </response>
         ///<response code="400">If any Validation error arrive </response>
-        [HttpPost("register", Name = "Post Register")]
+        [HttpPost("register", Name = "Register")]
         public async Task<ActionResult> Ragister(RagisterDTO ragisterDTO)
         {
             var user = new User { UserName = ragisterDTO.UserName, Email = ragisterDTO.Email };
@@ -58,7 +58,7 @@ namespace E_commerce_Website.Controllers
         /// <remarks>Login Method</remarks>
         ///<response code="200">If the user login successfully </response>
         ///<response code="401">If user credentials are invalid </response>
-        [HttpPost("login",Name ="Post Login")]
+        [HttpPost("login",Name ="Login")]
         //[ProducesResponseType(typeof(UserDTO), 200)]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
@@ -94,7 +94,7 @@ namespace E_commerce_Website.Controllers
         ///<response code="200">If the user is autorize than it will return user details and basket </response>
         ///<response code="400">If user's token is not valid </response>
         [Authorize]
-        [HttpGet("currentUser", Name = "Get Current User")]
+        [HttpGet("currentUser", Name = "Current User")]
         public async Task<ActionResult<UserDTO>> GetCurrentUser([FromHeader(Name = "Authorization")] string token)
         {
             var user = await _userManger.FindByNameAsync(User.Identity.Name);

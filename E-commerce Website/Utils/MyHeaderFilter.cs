@@ -20,7 +20,7 @@ namespace E_commerce_Website.Utils
                 In = ParameterLocation.Header,
                 Name = "accept-language",
                 Description = "pass the locale here: examples like => ar,ar-jo,en,en-gb",
-                Required = false // set to false if this is optional
+                Required = false // set to false if this is optional,
             });; ;
         }
 

@@ -113,7 +113,7 @@ namespace E_commerce_Website
             app.UseRouting();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowCredentials().AllowAnyMethod());
+            app.UseCors(options => options.WithOrigins("http://localhost:3000", "http://localhost:4200").AllowAnyHeader().AllowCredentials().AllowAnyMethod());
             app.UseAuthentication();
             app.UseAuthorization();
 

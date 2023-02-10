@@ -28,7 +28,7 @@ namespace E_commerce_Website.Controllers
         /// </response>
         /// <response code="404">If number of records found doesn't equal 
         /// number of records requested</response>
-        [HttpGet(Name = "Get Test")]
+        [HttpGet(Name = "Test")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
